@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -30,9 +31,9 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Category $categories)
+    public function store(CategoryRequest $request, Category $category)
     {
-        $result = $categories->create($request->all());
+        $result = $category->create($request->all());
         return redirect()->back()->with('status', $result != null ? 1 : 0);
     }
 
@@ -55,10 +56,10 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id, Category $categories)
+    public function update(CategoryRequest $request, Category $category)
     {
-        $categories = $categories->findOrFail($id);
-        $result = $categories->update($request->all());
+        // $categories = $category->findOrFail($id);
+        $result = $category->update($request->all());
         return redirect()->back()->with('status', $result != null ? 1 : 0);
     }
 

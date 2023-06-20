@@ -23,7 +23,7 @@
     </script>
     @endif
     @endif
-    <form action="{{route('products.update' , $products->id)}}" method="post">
+    <form action="{{route('products.update' , $products->id)}}" method="post" enctype="multipart/form-data">
         {{-- if show error 404 no expire token then not have csrf token--}}
         @csrf
         {{--commit : Form method spoofing --}}
@@ -32,38 +32,39 @@
         @method('put')
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="name" value="{{$products->name}}" name="name"
+            <input type="text" class="form-control" id="name" value="{{old('name' , $products->name)}}" name="name"
                 placeholder="Name">
-            <label for="name">Name</label>
+            <label for="name">Name </label>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" value="{{$products->slug}}" id="slug" name="slug"
+            <input type="text" class="form-control" value="{{old('slug' , $products->slug)}}" id="slug" name="slug"
                 placeholder="Slug">
             <label for="slug">slug</label>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="description" value="{{$products->description}}"
-                name="description" placeholder="Description">
+            <input type="text" class="form-control" id="description"
+                value="{{old('description' , $products->description)}}" name="description" placeholder="Description">
             <label for="description">description</label>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="short_description" value="{{$products->short_description}}"
-                name="short_description" placeholder="short description">
+            <input type="text" class="form-control" id="short_description"
+                value="{{old('short_description' , $products->description)}}" name="short_description"
+                placeholder="short description">
             <label for="short_description">short description</label>
         </div>
         {{-- ---------- --}}
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="price" name="price" value="{{$products->price}}"
-                placeholder="Price">
+            <input type="text" class="form-control" id="price" name="price"
+                value="{{old('short_description' , $products->price)}}" placeholder="Price">
             <label for="price">price</label>
         </div>
 
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="compare_price" name="compare_price"
-                value="{{$products->compare_price}}" placeholder="compare price">
+                value="{{old('short_description' , $products->compare_price)}}" placeholder="compare price">
             <label for="compare_price">compare price</label>
         </div>
         {{-- image --}}
@@ -75,9 +76,12 @@
         <div class="form-floating mb-3">
             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="status"
                 name="status">
-                <option value="draft" @if($products->status == 'draft') selected @endif>draft</option>
-                <option value="active" @if($products->status == 'active') selected @endif>active</option>
-                <option value="archived" @if($products->status == 'archived') selected @endif>archived</option>
+                <option value="draft" @if('draft'==old('draft' , $products->status) ) selected @endif>draft
+                </option>
+                <option value="active" @if('active'==old('active' , $products->status) ) selected @endif>active
+                </option>
+                <option value="archived" @if('archived'==old('archived' ,$products->status) ) selected @endif>
+                    archived</option>
             </select>
             <label for="status">status</label>
         </div>
@@ -87,7 +91,8 @@
             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="category_id"
                 name="category_id">
                 @foreach ($categories as $category)
-                <option value="{{$category->id}}" @if($category->id == $products->category_id ) selected
+                <option value="{{$category->id}}" @if($category->id == old('category_id' , $products->category_id))
+                    selected
                     @endif>{{$category->name}}</option>
 
                 @endforeach

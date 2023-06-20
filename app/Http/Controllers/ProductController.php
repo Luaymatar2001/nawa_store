@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -11,6 +12,21 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function validates($request, $id = 0)
+    {
+        $rule = [
+            'name' => 'required|string|max:255|min:3',
+            'slug' => 'required|unique:products,slug,$id',
+            'description' => 'nullable|string',
+            'short_description' => 'nullable|string|max:500',
+            'price' => 'required|min:0',
+            'compare_price' => 'nullable|gt:products,price',
+            'image' => 'required|file|mimetypes:image/png,image/jpg,image/bmp|max:1024',
+            'status' => 'required|in:draft,active,archived',
+            'category' => 'required|exists:categories,id',
+        ];
+        return $request->validate($rule);
+    }
     public function index()
     {
 
@@ -36,9 +52,23 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * يأخذ قيمة ثابته
+     * $product->status = $request->input('status' , 'active');
+     * بترجع ال id تبع ال request
+     *   $request->route('product');
+     * فقط يستدعي الإسم وال slug
+     * $request->only(['name', 'slug']);
+     * عدا
+     * $request->except(['name', 'slug']);
+
      */
-    public function store(Request $request, Product $product)
+    public function store(ProductRequest $request, Product $product)
     {
+
+        // $this->validates($request);
+        //Mass Assingment
+        // dd($request->toArray());
+        // $data =  $request->validated();
 
         $result = $product->create($request->all());
         return redirect()->back()->with('status', $result != null ? 1 : 0);
@@ -71,10 +101,13 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id, Product $products)
+    public function update(ProductRequest $request, Product $product)
     {
-        $products = $products->findOrFail($id);
-        $result = $products->update($request->all());
+        // dd($product->toArray());
+        // $this->validates($request, $id);
+        // $products = $product->findOrFail($id);
+
+        $result = $product->update($request->all());
         return redirect()->back()->with('status', $result != null ? 1 : 0);
     }
 
