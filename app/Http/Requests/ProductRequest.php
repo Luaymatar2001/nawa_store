@@ -21,6 +21,7 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        // in Product Binding is return object must analysis the object
         $product = $this->route('product', 0);
         $id = $product ? $product->id : 0;
 

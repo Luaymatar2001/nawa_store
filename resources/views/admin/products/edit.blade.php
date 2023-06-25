@@ -69,6 +69,17 @@
         </div>
         {{-- image --}}
         <div class="form-floating mb-3">
+            {{-- @if ($products->image) --}}
+            {{-- <b>{{asset('storage/'.$product->image)}}</b> --}}
+            {{-- <img src="{{$products->image_url}}" width="100" alt="nothing image">
+            --}}
+            <img src="{{$products->image}}" width="100" alt="nothing image">
+            {{-- @else
+            <img src="http://via.placeholder.com/80x80" alt="nothing image">
+            @endif --}}
+        </div>
+        <div class="form-floating mb-3">
+
             <input type="file" class="form-control" id="image" name="image" placeholder="image">
             <label for="compare_price">image</label>
         </div>

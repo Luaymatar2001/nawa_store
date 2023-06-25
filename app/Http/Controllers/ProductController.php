@@ -6,6 +6,8 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProductController extends Controller
 {
@@ -31,8 +33,8 @@ class ProductController extends Controller
     {
 
         $product = Product::leftJoin('categories', 'categories.id', '=', 'products.category_id')
-            ->select(['products.*', 'categories.name as category_name'])->get();
-
+            ->select(['products.*', 'categories.name as category_name'])->paginate(1);
+        // dd($product->toArray());
         return view('admin.products.index')->with([
             "title" => "index product",
             "products" => $product,
@@ -46,7 +48,7 @@ class ProductController extends Controller
     {
         $category = Category::all();
         return view('admin.products.create', [
-            'category' => $category
+            'category' => $category, 'status_options' => Product::status_option()
         ]);
     }
 
@@ -66,12 +68,28 @@ class ProductController extends Controller
     {
 
         // $this->validates($request);
-        //Mass Assingment
-        // dd($request->toArray());
-        // $data =  $request->validated();
 
-        $result = $product->create($request->all());
-        return redirect()->back()->with('status', $result != null ? 1 : 0);
+        //بترجع كل الحقول الي صار عليها فاليديتد
+        // dd($request->validated());
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            // generate random name for image and set this name in the path 
+            //can recive array of dist
+            $path = $file->store('storage/product_image', [
+                'disk' => 'public'
+            ]);
+        }
+        $data['image'] = $path;
+        // $data =  $request->validated();
+        $old_image = $product->image;
+        //Mass Assingment
+        $result = $product->create($data);
+        if ($old_image && $result->image = $old_image) {
+            Storage::disk('public')->delete($old_image);
+        }
+
+        return redirect()->back()->with(['status' => $result != null ? 1 : 0]);
     }
 
     /**
@@ -94,7 +112,8 @@ class ProductController extends Controller
 
         return view('admin.products.edit')->with([
             'products' => $products,
-            'categories' => $category
+            'categories' => $category,
+            'status_options' => Product::status_option()
         ]);
     }
 
@@ -106,17 +125,64 @@ class ProductController extends Controller
         // dd($product->toArray());
         // $this->validates($request, $id);
         // $products = $product->findOrFail($id);
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            // generate random name for image and set this name in the path 
+            //can recive array of dist
+            $path = $file->store('storage/product_image', [
+                'disk' => 'public'
+            ]);
+        }
+        $data['image'] = $path;
+        // $data =  $request->validated();
+        $old_image = $product->image;
 
-        $result = $product->update($request->all());
+        //Mass Assingment
+        $result = $product->update($data);
+
+        if ($old_image && $product->image = $old_image) {
+            Storage::disk('public')->delete($old_image);
+        }
+
+
+        // $result = $product->update($request->all());
         return redirect()->back()->with('status', $result != null ? 1 : 0);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        $result = Product::destroy($id);
+        // $result = Product::destroy($id);
+        $result = $product->delete();
+
         return redirect()->back()->with('status', $result != null ? 1 : 0);
+    }
+
+    public function trashedProduct()
+    {
+        $product = Product::onlyTrashed()->paginate(10);
+        return view('admin.products.trashed')->with([
+            'products' => $product
+        ]);
+    }
+    public function forceDelete($id)
+    {
+        $product = Product::findOrFail($id);
+        $result = Product::forceDeleted($id);
+        // dd($product);
+        if ($result) {
+            Storage::disk('public')->delete($product->image);
+        }
+
+        return redirect()->back() > with(['status', 'success']);
+    }
+
+    public function restore($id)
+    {
+        $result = Product::restored($id);
+        return redirect()->back();
     }
 }

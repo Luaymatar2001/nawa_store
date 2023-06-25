@@ -108,6 +108,8 @@
             @enderror
         </div>
         {{-- image --}}
+        {{-- ينشئ إختصار في ملف الببلك --}}
+        {{-- php artisan storage:link --}}
         <div class="form-floating mb-3">
             <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image"
                 placeholder="image">
@@ -122,9 +124,12 @@
         <div class="form-floating mb-3">
             <select class="form-select form-select-lg mb-3 @error('status') is-invalid @enderror"
                 aria-label=".form-select-lg example" id="status" name="status">
-                <option value="draft" selected>draft</option>
+                {{-- <option value="draft" selected>draft</option>
                 <option value="active">active</option>
-                <option value="archived">archived</option>
+                <option value="archived">archived</option> --}}
+                @foreach($status_options as $key => $value )
+                <option value="{{ $key }}">{{  $value }}</option>
+                @endforeach
             </select>
             <label for="status">status</label>
             @error('status')

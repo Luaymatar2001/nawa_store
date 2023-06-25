@@ -4,6 +4,7 @@
 
 <div class="container">
     <a href="<?=  route('products.create');  ?>" class="btn btn-sm btn-primary"> + Create Product</a>
+    <a href="<?=  route('products.trashed');  ?>" class="btn btn-sm btn-primary"> + View Trashed</a>
     <table class="table">
         <thead>
             <tr>
@@ -31,7 +32,15 @@
                 <td>{{$product->short_description }} </td>
                 <td>{{$product->price }} </td>
                 <td>{{$product->compare_price }} </td>
-                <td> {{$product->image }}</td>
+                <td>
+                    {{-- @if ($product->image) --}}
+                    {{-- <b>{{asset('storage/'.$product->image)}}</b> --}}
+                    <img src="{{$product->image_url}}" width="80" alt="nothing image">
+                    {{-- @else --}}
+                    {{-- <img src="http://via.placeholder.com/80x80" alt="nothing image"> --}}
+                    {{-- @endif --}}
+                </td>
+
                 <td> {{$product->status }}</td>
                 <td>{{$product->category_name}} </td>
                 <td>
@@ -45,10 +54,14 @@
                     </div>
                 </td>
             </tr>
+
             @endforeach
 
         </tbody>
     </table>
+</div>
+<div class="row">
+    {{$products->links()}}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
