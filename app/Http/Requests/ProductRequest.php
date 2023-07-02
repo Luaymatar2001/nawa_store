@@ -37,6 +37,8 @@ class ProductRequest extends FormRequest
                 'image' => 'nullable|image|mimes:png,jpg,bmp|max:2024',
                 'status' => 'required|in:draft,active,archived',
                 'category_id' => 'required|exists:categories,id',
+                'gallery' => 'nullable|array',
+                'gallery.*'=> 'image'
             ];
     }
     public function message()

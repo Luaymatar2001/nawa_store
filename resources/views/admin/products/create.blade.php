@@ -84,6 +84,14 @@
             </small>
             @enderror
         </div>
+
+
+        <div class="mb-3">
+            <label for="gallery">gallery image</label>
+            <div>
+                <input type="file" class="form_control" multiple name="gallery[]" id="gallery">
+            </div>
+        </div>
         {{-- ---------- --}}
         <div class="form-floating mb-3">
             <input type="text" value="{{old('price')}}" class="form-control @error('price') is-invalid @enderror"

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,7 +34,7 @@ class ProductController extends Controller
     {
 
         $product = Product::leftJoin('categories', 'categories.id', '=', 'products.category_id')
-            ->select(['products.*', 'categories.name as category_name'])->paginate(1);
+            ->select(['products.*', 'categories.name as category_name'])->paginate(10);
         // dd($product->toArray());
         return view('admin.products.index')->with([
             "title" => "index product",
@@ -81,12 +82,21 @@ class ProductController extends Controller
             ]);
         }
         $data['image'] = $path;
+
         // $data =  $request->validated();
         $old_image = $product->image;
         //Mass Assingment
         $result = $product->create($data);
         if ($old_image && $result->image = $old_image) {
             Storage::disk('public')->delete($old_image);
+        }
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                ProductImage::create([
+                    'product_id' => $result->id,
+                    'image' => $file->store('storage/product_image', 'public'),
+                ]);
+            }
         }
 
         return redirect()->back()->with(['status' => $result != null ? 1 : 0]);
@@ -110,9 +120,12 @@ class ProductController extends Controller
         $products = Product::where('id', '=', $id)->firstOrFail();
         $category = Category::all();
 
+        $gallery = ProductImage::where('product_id', '=', $products->id)->get();
+
         return view('admin.products.edit')->with([
             'products' => $products,
             'categories' => $category,
+            'gallery' => $gallery,
             'status_options' => Product::status_option()
         ]);
     }
@@ -134,6 +147,7 @@ class ProductController extends Controller
                 'disk' => 'public'
             ]);
         }
+
         $data['image'] = $path;
         // $data =  $request->validated();
         $old_image = $product->image;
@@ -145,6 +159,14 @@ class ProductController extends Controller
             Storage::disk('public')->delete($old_image);
         }
 
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image' => $file->store('storage/product_image', 'public'),
+                ]);
+            }
+        }
 
         // $result = $product->update($request->all());
         return redirect()->back()->with('status', $result != null ? 1 : 0);
