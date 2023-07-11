@@ -3,6 +3,24 @@
 {{-- @section('title' , 'Index Products') --}}
 
 <div class="container">
+    @if (session()->has('status'))
+    @if (session('status'))
+    <script>
+        $(document).ready(function() {
+                                            swal({
+                                                icon: "success",
+                                                text: "the process has been completed successfully!"
+                                            })
+                                        });
+    </script>
+    @else
+    <script>
+        swal("Faild to run the process", {
+                                            className: "red-bg",
+                                        });
+    </script>
+    @endif
+    @endif
     <a href="<?=  route('products.create');  ?>" class="btn btn-sm btn-primary"> + Create Product</a>
 
     <table class="table">
@@ -34,8 +52,15 @@
                 {{-- <td>{{$product->category_name}} </td> --}}
                 <td>
                     <div class="btn-group">
-                        <a href="{{route("products.edit" , $product->id)}}" class="btn btn-outline-info">Edit</a>
-                        <form action="{{route("products.destroy" , $product->id)}}" method="post">
+
+                        {{-- <a href="{{route("products.restore" , $product->id)}}" class="btn
+                        btn-outline-info">restore</a> --}}
+                        <form action="{{route("products.restore" , $product->id)}}" method="post">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-outline-info">restore</button>
+                        </form>
+                        <form action="{{route("products.forceDelete" , $product->id)}}" method="post">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger">Delete</button>

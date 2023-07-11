@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\homeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\store\ProductsController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,34 +20,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//     return view('welcome');
+// });
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/new', function () {
-    return view('layouts.admin');
-});
-Route::get('/products/trashed', [ProductController::class, 'trashedProduct'])->name('products.trashed');
-
-Route::put('/products/{product}/restore', [ProductController::class, 'restore'])->name('products.restore');
-
-// Route::delete('/products/{product}/force', [ProductController::class, 'forceDelete'])->name('products.force-delete');
-
-Route::resource('/products', ProductController::class);
-Route::resource('/categories', CategoryController::class);
+Route::get('/Forbidden' , function () {
+    return view('pageUnauthorized');
+})->name('pageUnauthorized');
 
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/shop.php';

@@ -178,8 +178,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="{{route('profile.edit')}}" class="d-block">{{Auth::user()->name}}</a>
                     </div>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-md" style="border:none;"> <i
+                                class="fas fa-sign-out-alt text-danger">
+                            </i> </button>
+                    </form>
                 </div>
 
                 <!-- SidebarSearch Form -->
@@ -222,32 +228,44 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <p>Index Category</p>
                                     </a>
                                 </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
-                                <i class="fab fa-product-hunt mb-2"></i>
-                                <p>
-                                    Products
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{route('products.create')}}" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Create Product</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{route('products.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Index Product</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>trashed Category</p>
+                                </a>
+                        </li> --}}
+                    </ul>
+                    </li>
+
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link active">
+                            <i class="fab fa-product-hunt mb-2"></i>
+                            <p>
+                                Products
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('products.create')}}" class="nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create Product</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('products.index')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Index Product</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('products.trashed')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>trashed Product</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                     </ul>
                 </nav>

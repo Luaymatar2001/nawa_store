@@ -13,7 +13,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        // $categories = Category::all();
+        // can be call this count in view by $category->products_count
+
+        $categories = Category::withCount('products')->paginate(5);
+        //simpe paginate preivos and next
+        // ->simplePaginate(5)
         return view('admin.categories.index')->with([
             "title" => "index categories",
             "categories" => $categories,
@@ -49,6 +54,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
+        // can be call this count in view by $category->products_count
+        // $productCount = Category::withCount('products')->paginate();
         $categories = Category::where('id', '=', $id)->firstOrFail();
         return view('admin.categories.edit')->with('category', $categories);
     }

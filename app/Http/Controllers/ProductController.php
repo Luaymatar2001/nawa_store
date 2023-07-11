@@ -33,6 +33,7 @@ class ProductController extends Controller
     public function index()
     {
 
+
         $product = Product::leftJoin('categories', 'categories.id', '=', 'products.category_id')
             ->select(['products.*', 'categories.name as category_name'])->paginate(10);
         // dd($product->toArray());
@@ -117,7 +118,14 @@ class ProductController extends Controller
     {
         //تخرج صفحة خطأ
         // abort(404);
-        $products = Product::where('id', '=', $id)->firstOrFail();
+        $products = Product::where('id', '=', $id)
+            //يحذف ال global scope single
+            // ->withoutGlobalScope('owner')
+            //delete all global scope
+            // ->withoutGlobalScopes()
+            //call local scope
+            // ->status('active')
+            ->firstOrFail();
         $category = Category::all();
 
         $gallery = ProductImage::where('product_id', '=', $products->id)->get();
@@ -179,32 +187,30 @@ class ProductController extends Controller
     {
         // $result = Product::destroy($id);
         $result = $product->delete();
-
         return redirect()->back()->with('status', $result != null ? 1 : 0);
     }
 
     public function trashedProduct()
     {
         $product = Product::onlyTrashed()->paginate(10);
-        return view('admin.products.trashed')->with([
-            'products' => $product
-        ]);
+        return view('admin.products.trashed')->with(['products' => $product]);
     }
     public function forceDelete($id)
     {
-        $product = Product::findOrFail($id);
-        $result = Product::forceDeleted($id);
+        $product = Product::onlyTrashed()->findOrFail($id);
+        // $result = Product::where('id', $id)->forceDelete();
+        $result = $product->forceDelete();
         // dd($product);
         if ($result) {
             Storage::disk('public')->delete($product->image);
         }
 
-        return redirect()->back() > with(['status', 'success']);
+        return redirect()->back()->with(['status', true]);
     }
 
     public function restore($id)
     {
-        $result = Product::restored($id);
-        return redirect()->back();
+        $result = Product::where('id', $id)->restore();
+        return redirect()->back()->with(['status', true]);
     }
 }

@@ -21,12 +21,13 @@
 @endif
 @endif
 <div class="container">
-     <a href="<?=  route('categories.create');  ?>" class="btn btn-sm btn-primary"> + Create categories</a>
+    <a href="<?=  route('categories.create');  ?>" class="btn btn-sm btn-primary"> + Create categories</a>
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>products count</th>
                 <th>setting</th>
             </tr>
         </thead>
@@ -36,6 +37,7 @@
             <tr>
                 <td>{{$category->id }}</td>
                 <td> {{$category->name }}</td>
+                <td> {{$category->products_count}}</td>
                 <td>
                     <div class="btn-group">
                         <a href="{{route("categories.edit" , $category->id)}}" class="btn btn-outline-info">Edit</a>
@@ -52,6 +54,9 @@
 
         </tbody>
     </table>
+</div>
+<div class="row">
+    {{$categories->links()}}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

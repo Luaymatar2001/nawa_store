@@ -37,135 +37,141 @@
         {{-- <input type="hidden" name="_method" value="put"> --}}
         {{-- == --}}
         {{-- @method('put') --}}
-
-        <div class="form-floating mb-3">
+        <x-form.input type='text' label='Product Name' id='name' name='name' />
+        {{-- <div class="form-floating mb-3">
             <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{old('name')}}"
-                id=" name" name="name" placeholder="Name">
-            <label for="name">Name</label>
-            @error('name')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
+        id=" name" name="name" placeholder="Name">
+        <label for="name">Name</label>
+        @error('name')
+        <small id="passwordHelp" class="text-danger">
+            {{ $message }}
+        </small>
+        @enderror
+</div> --}}
 
 
+<x-form.input type='text' label='Product Slug' id='slug' name='slug' />
+{{-- <div class="form-floating mb-3">
+    <input type="text" class="form-control @error('slug') is-invalid @enderror" value="{{old('slug')}}" id="slug"
+name="slug" placeholder="Slug">
+<label for="slug">slug</label>
+@error('slug')
+<small id="passwordHelp" class="text-danger">
+    {{ $message }}
+</small>
+@enderror
+</div> --}}
 
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control @error('slug') is-invalid @enderror" value="{{old('slug')}}"
-                id="slug" name="slug" placeholder="Slug">
-            <label for="slug">slug</label>
-            @error('slug')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control @error('description') is-invalid @enderror"
-                value="{{old('description')}}" id="description" name="description" placeholder="Description">
-            <label for="description">description</label>
-            @error('description')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control @error('short_description') is-invalid @enderror"
-                value="{{old('short_description')}}" id="short_description" name="short_description"
-                placeholder="short description">
-            <label for="short_description">short description</label>
-            @error('short_description')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
+<x-form.textarea type='text' label='Product description' id='description' name='description' />
+{{-- <div class="form-floating mb-3">
+    <input type="text" class="form-control @error('description') is-invalid @enderror" value="{{old('description')}}"
+id="description" name="description" placeholder="Description">
+<label for="description">description</label>
+@error('description')
+<small id="passwordHelp" class="text-danger">
+    {{ $message }}
+</small>
+@enderror
+</div> --}}
 
 
-        <div class="mb-3">
-            <label for="gallery">gallery image</label>
-            <div>
-                <input type="file" class="form_control" multiple name="gallery[]" id="gallery">
-            </div>
-        </div>
-        {{-- ---------- --}}
-        <div class="form-floating mb-3">
-            <input type="text" value="{{old('price')}}" class="form-control @error('price') is-invalid @enderror"
-                id="price" name="price" placeholder="Price">
-            <label for="price">price</label>
-            @error('price')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
+<x-form.input type='text' label='short description' id='short_description' name='short_description' />
+{{-- <div class="form-floating mb-3">
+    <input type="text" class="form-control @error('short_description') is-invalid @enderror"
+        value="{{old('short_description')}}" id="short_description" name="short_description"
+placeholder="short description">
+<label for="short_description">short description</label>
+@error('short_description')
+<small id="passwordHelp" class="text-danger">
+    {{ $message }}
+</small>
+@enderror
+</div> --}}
 
-        <div class="form-floating mb-3">
-            <input type="text" value="{{old('compare_price')}}"
-                class="form-control @error('compare_price') is-invalid @enderror" id="compare_price"
-                name="compare_price" placeholder="compare price">
-            <label for="compare_price">compare price</label>
-            @error('compare_price')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
-        {{-- image --}}
-        {{-- ينشئ إختصار في ملف الببلك --}}
-        {{-- php artisan storage:link --}}
-        <div class="form-floating mb-3">
-            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image"
-                placeholder="image">
-            <label for="compare_price">image</label>
-            @error('image')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
+<x-form.input type='file' label='gallery image' id='gallery' name='gallery[]' multiple2='multiple' />
+{{-- <div class="mb-3">
+    <label for="gallery">gallery image</label>
+    <div>
+        <input type="file" class="form_control" multiple name="gallery[]" id="gallery">
+    </div>
+</div> --}}
+{{-- ---------- --}}
 
-        <div class="form-floating mb-3">
-            <select class="form-select form-select-lg mb-3 @error('status') is-invalid @enderror"
-                aria-label=".form-select-lg example" id="status" name="status">
-                {{-- <option value="draft" selected>draft</option>
+<x-form.input type='number' label='price' id='price' name='price' />
+{{-- <div class="form-floating mb-3">
+    <input type="text" value="{{old('price')}}" class="form-control @error('price') is-invalid @enderror" id="price"
+name="price" placeholder="Price">
+<label for="price">price</label>
+@error('price')
+<small id="passwordHelp" class="text-danger">
+    {{ $message }}
+</small>
+@enderror
+</div> --}}
+<x-form.input type='number' label='compare price' id='compare_price' name='compare_price' />
+{{-- <div class="form-floating mb-3">
+    <input type="text" value="{{old('compare_price')}}"
+class="form-control @error('compare_price') is-invalid @enderror" id="compare_price" name="compare_price"
+placeholder="compare price">
+<label for="compare_price">compare price</label>
+@error('compare_price')
+<small id="passwordHelp" class="text-danger">
+    {{ $message }}
+</small>
+@enderror
+</div> --}}
+{{-- image --}}
+{{-- ينشئ إختصار في ملف الببلك --}}
+{{-- php artisan storage:link --}}
+<x-form.input type='file' label='image' id='image' name='image' />
+{{-- <div class="form-floating mb-3">
+    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image"
+        placeholder="image">
+    <label for="compare_price">image</label>
+    @error('image')
+    <small id="passwordHelp" class="text-danger">
+        {{ $message }}
+</small>
+@enderror
+</div> --}}
+
+<div class="form-floating mb-3">
+    <select class="form-select form-select-lg mb-3 @error('status') is-invalid @enderror"
+        aria-label=".form-select-lg example" id="status" name="status">
+        {{-- <option value="draft" selected>draft</option>
                 <option value="active">active</option>
                 <option value="archived">archived</option> --}}
-                @foreach($status_options as $key => $value )
-                <option value="{{ $key }}">{{  $value }}</option>
-                @endforeach
-            </select>
-            <label for="status">status</label>
-            @error('status')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
-        {{-- Category--}}
+        @foreach($status_options as $key => $value )
+        <option value="{{ $key }}">{{  $value }}</option>
+        @endforeach
+    </select>
+    <label for="status">status</label>
+    @error('status')
+    <small id="passwordHelp" class="text-danger">
+        {{ $message }}
+    </small>
+    @enderror
+</div>
+{{-- Category--}}
+<x-form.option id="categoryId" name="category_id" title="category" :options="$category ?? $categories" />
+{{-- <div class="form-floating mb-3">
+    <select class="form-select form-select-lg mb-3 @error('category_id') is-invalid @enderror"
+        aria-label=".form-select-lg example" id="categoryId" name="category_id">
+        @foreach ($category as $categories)
+        <option value="{{$categories->id}}" selected>{{$categories->name}}</option>
+@endforeach
 
-        <div class="form-floating mb-3">
-            <select class="form-select form-select-lg mb-3 @error('category_id') is-invalid @enderror"
-                aria-label=".form-select-lg example" id="categoryId" name="category_id">
-                @foreach ($category as $categories)
-                <option value="{{$categories->id}}" selected>{{$categories->name}}</option>
-                @endforeach
+</select>
+<label for="category">category</label>
+@error('category_id')
+<small id="passwordHelp" class="text-danger">
+    {{ $message }}
+</small>
+@enderror
+</div> --}}
+<button type="submit" class="btn btn-primary">save</button>
 
-            </select>
-            <label for="category">category</label>
-            @error('category_id')
-            <small id="passwordHelp" class="text-danger">
-                {{ $message }}
-            </small>
-            @enderror
-        </div>
-        <button type="submit" class="btn btn-primary">save</button>
-
-    </form>
+</form>
 
 </div>
 

@@ -7,6 +7,9 @@ use Illuminate\View\View;
 
 class AppLayout extends Component
 {
+    public function  __constructor()
+    {
+    }
     /**
      * Get the view / contents that represents the component.
      */

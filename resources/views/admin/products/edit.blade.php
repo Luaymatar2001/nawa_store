@@ -30,49 +30,55 @@
         {{-- <input type="hidden" name="_method" value="put"> --}}
         {{-- == --}}
         @method('put')
-
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="name" value="{{old('name' , $products->name)}}" name="name"
-                placeholder="Name">
-            <label for="name">Name </label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" value="{{old('slug' , $products->slug)}}" id="slug" name="slug"
-                placeholder="Slug">
-            <label for="slug">slug</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="description"
-                value="{{old('description' , $products->description)}}" name="description" placeholder="Description">
-            <label for="description">description</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="short_description"
-                value="{{old('short_description' , $products->description)}}" name="short_description"
-                placeholder="short description">
-            <label for="short_description">short description</label>
-        </div>
+        <x-form.input type='text' label='Product Name' id='name' name='name' value="{{$products->name}}" />
         {{-- <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="name" value="{{old('name' , $products->name)}}" name="name"
+        placeholder="Name">
+        <label for="name">Name </label>
+</div> --}}
+<x-form.input type='text' label='slug' id='slug' name='slug' value="{{$products->slug}}" />
+{{-- <div class="form-floating mb-3">
+    <input type="text" class="form-control" value="{{old('slug' , $products->slug)}}" id="slug" name="slug"
+placeholder="Slug">
+<label for="slug">slug</label>
+</div> --}}
+<x-form.textarea type='text' label='Product description' id='description' name='description'
+    value="{{$products->description}}" />
+{{-- <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="description" value="{{old('description' , $products->description)}}"
+name="description" placeholder="Description">
+<label for="description">description</label>
+</div> --}}
+
+<x-form.input type='text' label='short description' id='short_description' name='short_description'
+    value="{{$products->short_description}}" />
+{{-- <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="short_description"
+        value="{{old('short_description' , $products->short_description)}}" name="short_description"
+placeholder="short description">
+<label for="short_description">short description</label>
+</div> --}}
+{{-- <div class="form-floating mb-3">
             <input type="file" class="form_control" multiple name="gallery[]" id="gallery">
             <label for="gallery">gallery image</label>
         </div> --}}
 
-        <div class="form-floating mb-3">
 
-            <input type="file" class="form-control" multiple id="gallery" name="gallery[]" value="{{old('gallery[]' )}}"
-                multipile placeholder="gallery">
-            <label for="gallery">gallery</label>
-        </div>
-        {{-- <div class="mb-3">
+<x-form.input type='file' label='gallery' id='gallery' multiple2='multiple' name='gallery[]'
+    value="{{$products->gallery}} " />
+{{-- <div class="form-floating mb-3">
+
+    <input type="file" class="form-control" multiple id="gallery" name="gallery[]" value="{{old('gallery[]' )}}"
+multipile placeholder="gallery">
+<label for="gallery">gallery</label>
+</div> --}}
+{{-- <div class="mb-3">
             <label for="gallery">gallery image</label>
             <div>
                 <input type="file" class="form_control" multiple name="gallery[]" id="gallery">
             </div>
         </div> --}}
-        {{-- @if ($gallery)
+{{-- @if ($gallery)
         <div class="row">
             @foreach($gallery as $gall)
             <div class="col_md_3">
@@ -98,24 +104,32 @@
 </div>
 @endif
 {{-- ---------- --}}
-<div class="form-floating mb-3">
-    <input type="text" class="form-control" id="price" name="price"
-        value="{{old('short_description' , $products->price)}}" placeholder="Price">
-    <label for="price">price</label>
-</div>
 
+<x-form.input type='number' label='price' id='price' name='price' value="{{$products->price}}" />
+{{-- <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="price" name="price"
+        value="{{old('price' , $products->price)}}" placeholder="Price">
+<label for="price">price</label>
+</div> --}}
+
+
+<x-form.input type='compare_price' label='compare price' id='compare_price' name='price'
+    value="{{$products->compare_price}}" />
+{{-- 
 <div class="form-floating mb-3">
     <input type="text" class="form-control" id="compare_price" name="compare_price"
-        value="{{old('short_description' , $products->compare_price)}}" placeholder="compare price">
-    <label for="compare_price">compare price</label>
-</div>
+        value="{{old('compare_price' , $products->compare_price)}}" placeholder="compare price">
+<label for="compare_price">compare price</label>
+</div> --}}
 {{-- image --}}
-<div class="form-floating mb-3">
+
+<x-form.input type='file' label='image' id='image' name='image' value="{{$products->image}}" />
+{{-- <div class="form-floating mb-3">
 
     <input type="file" class="form-control" id="image" name="image" value="{{old('image' ,$products->image )}}"
-        placeholder="image">
-    <label for="compare_price">image</label>
-</div>
+placeholder="image">
+<label for="compare_price">image</label>
+</div> --}}
 <div class="form-floating mb-3">
     {{-- @if ($products->image) --}}
     {{-- <b>{{asset('storage/'.$product->image)}}</b> --}}
@@ -149,20 +163,21 @@
     <label for="status">status</label>
 </div>
 {{-- Category--}}
-
-<div class="form-floating mb-3">
+<x-form.option id="categoryId" name="category_id" title="category" :options="$category ?? $categories"
+    :value="$products->category_id" />
+{{-- <div class="form-floating mb-3">
     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="category_id"
         name="category_id">
         @foreach ($categories as $category)
         <option value="{{$category->id}}" @if($category->id == old('category_id' , $products->category_id))
-            selected
-            @endif>{{$category->name}}</option>
+selected
+@endif>{{$category->name}}</option>
 
-        @endforeach
+@endforeach
 
-    </select>
-    <label for="category">category</label>
-</div>
+</select>
+<label for="category">category</label>
+</div> --}}
 <button type="submit" class="btn btn-primary">save</button>
 
 </form>
